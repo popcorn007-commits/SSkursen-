@@ -45,7 +45,7 @@ export const SingleMessage = ({ message, user, onUnauthorized, fetchPosts }) => 
       }
 
       const data = await res.json()
-
+//// Kvarglömd console.log kan läcka felmeddelanden från backend, bör tas bort.
       if (data.error) {
         console.log(data)
         setEditError(data.error)
@@ -81,6 +81,8 @@ export const SingleMessage = ({ message, user, onUnauthorized, fetchPosts }) => 
             </label>
           </div>
         )}
+
+        //Delete knappen saknar autentiserings och akturiserings kontroller, knappen visas därför för alla. 
 
         <div className="message-actions">
           <button type="button" className="delete-btn" onClick={onDelete}>🗑️</button>

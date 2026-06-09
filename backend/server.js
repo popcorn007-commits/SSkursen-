@@ -29,6 +29,8 @@ app.post("/register", async (req, res) => {
   try {
     const { email, password, username } = req.body
 
+    //Användarnamn bör även ha begränsning för max antal tecken, inte bara minimum. Ingean if-sats/begräning/villkor kopplad till email eller lösenord finns. Detta bör läggas till.
+
     if (!username || username.trim().length < 2) {
       return res.status(400).json({ success: false, message: "Username must be at least 2 characters" })
     }
@@ -37,6 +39,7 @@ app.post("/register", async (req, res) => {
       $or: [{ email: email.toLowerCase() }, { username: username.trim() }]
     })
 
+//För specifkt felmeddelande. Använd istället "Username or email already in use". 
     if (existingUser) {
       const field = existingUser.email === email.toLowerCase() ? "email" : "username"
       return res.status(400).json({
@@ -73,6 +76,7 @@ app.post("/register", async (req, res) => {
   }
 })
 
+//saknar begränsning för max längd på login och password. Detta bör läggas till.
 app.post("/login", async (req, res) => {
   try {
     const { login, password } = req.body
@@ -88,6 +92,7 @@ app.post("/login", async (req, res) => {
       })
     }
 
+    //För specifikt felmeddelande. Använd istället "Invalid username/email or password".//
     const passwordMatch = await bcrypt.compare(password, user.password)
     if (!passwordMatch) {
       return res.status(401).json({
@@ -136,6 +141,7 @@ app.get("/messages", async (req, res) => {
   }
 })
 
+//Saknar begränsning för max längd på meddelande.
 app.post("/messages", authenticateUser, async (req, res) => {
   const message = new Message({ message: req.body.message, user: req.user._id })
   try {
@@ -146,6 +152,7 @@ app.post("/messages", authenticateUser, async (req, res) => {
   }
 })
 
+//Saknar begränsning för max längd på meddelande från redigeringsläge. 
 app.patch("/messages/:id", authenticateUser, async (req, res) => {
   if (!isValidId(req.params.id)) return res.status(400).json({ error: "Invalid message ID" })
   try {
@@ -165,6 +172,7 @@ app.patch("/messages/:id", authenticateUser, async (req, res) => {
   }
 })
 
+// Delete funktionen saknar autentisering & auktorisring, vilket innebär att vem som helst kan ta bort meddelanden. Detta är en allvarlig säkerhetsrisk och bör åtgärdas genom att lägga till authenticateUser middleware på denna routeih
 app.delete("/messages/:id", async (req, res) => {
   if (!isValidId(req.params.id)) return res.status(400).json({ error: "Invalid message ID" })
   try {

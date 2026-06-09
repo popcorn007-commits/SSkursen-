@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/messages"
 
 mongoose.connect(mongoUrl)
-
+//consol.log kvarglömd // 
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB")
 })

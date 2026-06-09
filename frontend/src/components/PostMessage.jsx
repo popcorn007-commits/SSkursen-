@@ -20,6 +20,8 @@ export const PostMessage = ({ newMessage, fetchPosts, user, onUnauthorized }) =>
         body: JSON.stringify({ message: newPost }),
       })
 
+      // Kvarglömd console.log läcker token direkt, en angripare kan använda token för att utge sig för att vara användaren. Bör tas bort.
+
       console.log("Token being sent:", user?.response?.accessToken)
 
       if (res.status === 401) {
@@ -29,7 +31,7 @@ export const PostMessage = ({ newMessage, fetchPosts, user, onUnauthorized }) =>
       }
 
       const data = await res.json()
-
+// Kvarglömd console.log kan läcka felmeddelanden från backend, bör tas bort.
       if (data.message && !data._id) {
         console.log(data)
         setErrorMessage(data.message)

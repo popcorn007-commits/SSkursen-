@@ -29,8 +29,10 @@ export const AuthModal = ({ mode, onClose, onSuccess }) => {
       const data = await res.json()
       if (!res.ok) throw new Error(data.message || "Something went wrong")
 
+//kvarglömd console.log läcker användardata, bör tas bort
       console.log("Auth successful:", data)
       onSuccess(data)
+      //kvarglömd consol.log kan läcka känsliga fellmedelanden kopplade till tex.server eller databas.
     } catch (err) {
       console.log(err)
       setError(err.message)

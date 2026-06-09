@@ -64,6 +64,7 @@ export const App = () => {
         <AuthModal
           mode={modal}
           onClose={() => setModal(null)}
+          //kvarglömd console.log läcker användardata, bör tas bort 
           onSuccess={(data) => { 
             console.log("User logged in:", data)
             setUser(data) 
