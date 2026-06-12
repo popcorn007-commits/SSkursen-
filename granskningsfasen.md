@@ -11,9 +11,23 @@ Detta betyder att det inte finns något stopp på antal anrop som kan skickas p�
 
 För att åtgärda detta bör vi installera express-rate-limit bibilioteket vars middleware funktion vi kan kalla på i routen och som räknar antal anrop och blockerar efter bestämt antal. Detta gör vi på precis samma sätt som vi gjort med middleware funktionen authenticateUser från auth.js
 
-Denna sårbarhet kopplar jag främst till nr 5 - security misconfiguration på OWASP top 10, men man kan även argumentera för att det rör sig om nr 4 - insecure design då konfigurationen inte bara var fel konfigurerat utan helt saknades. 
 
-Länk till sårbarheten
+HADE KUNNAT SE UT SÅHÄR :
+// Längst upp bland importerna
+import rateLimit from "express-rate-limit"
+
+// Efter importerna, innan routerna
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minut
+  max: 15 // max 15 anrop per minut
+})
+
+// I routen
+app.post("/messages", limiter, authenticateUser, async (req, res) => {
+
+Denna sårbarhet kopplar jag främst till nr 4 - insecure design då konfigurationen inte bara var fel konfigurerat utan helt saknades. 
+
+Länk till sårbarheten #3
 https://github.com/popcorn007-commits/SSkursen-/security/code-scanning/5
 
 
